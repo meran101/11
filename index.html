@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <title>Meran Alyas | TIGER Bot</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Google tag (gtag.js) للإحصائيات الخفية -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPT5W1N92S"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-RPT5W1N92S');
+    </script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * {
@@ -240,6 +251,10 @@
         // Language & State Management
         let currentLang = 'en';
 
+        function statusPage(pageId) {
+            // Placeholder for safety
+        }
+
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
             if (pageId === 'home') {
@@ -264,7 +279,7 @@
                 currentLang = 'en';
                 document.documentElement.dir = 'ltr';
                 document.getElementById('homeBtn').innerText = '🏠 Home';
-                document.getElementById('aboutBtn').innerText = '👤 About';
+                document.getElementById('aboutBtn').innerText.innerText = '👤 About';
                 document.getElementById('langBtn').innerText = 'العربية 🌐';
                 
                 document.getElementById('mainTitle').innerText = 'Welcome To My Account 👋';
