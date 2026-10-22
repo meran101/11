@@ -5,7 +5,7 @@
     <title>Meran Alyas | TIGER Bot</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Google tag (gtag.js) للإحصائيات الخفية -->
+    <!-- Google tag (gtag.js) - إحصائيات زوار خفية -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPT5W1N92S"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -248,12 +248,8 @@
         }
         rainContainer('matrixRain').innerHTML = rainHtml;
 
-        // Language & State Management
+        // Language & Navigation
         let currentLang = 'en';
-
-        function statusPage(pageId) {
-            // Placeholder for safety
-        }
 
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
@@ -279,7 +275,7 @@
                 currentLang = 'en';
                 document.documentElement.dir = 'ltr';
                 document.getElementById('homeBtn').innerText = '🏠 Home';
-                document.getElementById('aboutBtn').innerText.innerText = '👤 About';
+                document.getElementById('aboutBtn').innerText = '👤 About';
                 document.getElementById('langBtn').innerText = 'العربية 🌐';
                 
                 document.getElementById('mainTitle').innerText = 'Welcome To My Account 👋';
