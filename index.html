@@ -36,7 +36,7 @@
             position: relative;
         }
 
-        /* Canvas للخلفية المتحركة التفاعلية بالكامل */
+        /* Canvas للخلفية المتحركة مع تفعيل التسريع بواسطة GPU */
         #cyberCanvas {
             position: fixed;
             top: 0;
@@ -45,26 +45,29 @@
             height: 100vh;
             z-index: 0;
             pointer-events: none;
+            will-change: transform;
+            transform: translateZ(0);
         }
 
-        /* تأثير خط الليزر المتحرك في الخلفية */
+        /* تأثير خط الليزر المتحرك خفيف الأداء */
         .laser-scanline {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
-            height: 3px;
+            height: 2px;
             background: linear-gradient(90deg, transparent, #00f0ff, transparent);
-            box-shadow: 0 0 15px #00f0ff, 0 0 30px #00f0ff;
+            box-shadow: 0 0 10px #00f0ff;
             z-index: 1;
-            opacity: 0.7;
+            opacity: 0.6;
             animation: scanlineMove 8s linear infinite;
             pointer-events: none;
+            will-change: transform;
         }
 
         @keyframes scanlineMove {
-            0% { top: -10px; }
-            100% { top: 100vh; }
+            0% { transform: translateY(-10px); }
+            100% { transform: translateY(100vh); }
         }
 
         .container {
@@ -84,7 +87,8 @@
             pointer-events: none;
             z-index: 2;
             overflow: hidden;
-            opacity: 0.5;
+            opacity: 0.45;
+            will-change: transform;
         }
 
         .matrix-column {
@@ -93,8 +97,9 @@
             width: 2px;
             height: 120px;
             background: linear-gradient(180deg, transparent, #00b4d8, #0077b6);
-            box-shadow: 0 0 8px rgba(0, 150, 255, 0.9), 0 0 3px rgba(0, 212, 255, 0.7);
+            box-shadow: 0 0 6px rgba(0, 150, 255, 0.8);
             animation: rainFall linear infinite;
+            will-change: transform;
         }
 
         @keyframes rainFall {
@@ -121,7 +126,8 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
             text-align: center;
             outline: none;
@@ -131,7 +137,7 @@
             background: linear-gradient(135deg, rgba(0, 119, 182, 0.9), rgba(0, 180, 216, 0.8));
             color: #ffffff;
             border-color: rgba(0, 240, 255, 1);
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.8);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.7);
             transform: translateY(-2px);
         }
 
@@ -144,7 +150,7 @@
         /* Page Transitions & Content */
         .page {
             display: none;
-            animation: pageSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: pageSlideIn 0.4s ease-out forwards;
         }
 
         .page.active {
@@ -152,8 +158,8 @@
         }
 
         @keyframes pageSlideIn {
-            0% { opacity: 0; transform: translateY(15px) scale(0.98); filter: blur(4px); }
-            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         /* Banner & Profile Styling */
@@ -172,7 +178,7 @@
             background-size: cover;
             background-position: center;
             border: 1px solid rgba(0, 240, 255, 0.6);
-            box-shadow: 0 0 25px rgba(0, 180, 216, 0.4);
+            box-shadow: 0 0 20px rgba(0, 180, 216, 0.4);
         }
 
         .profile-container {
@@ -189,11 +195,10 @@
             border-radius: 50%;
             object-fit: cover;
             border: 4px solid #020617;
-            box-shadow: 0px 0px 30px rgba(0, 240, 255, 0.9);
+            box-shadow: 0px 0px 25px rgba(0, 240, 255, 0.8);
             background-color: #020617;
         }
 
-        /* اسم Meran تحت الصورة بخط مضيء وفخم */
         .profile-name {
             text-align: center;
             font-size: 28px;
@@ -203,7 +208,7 @@
             margin-top: 12px;
             margin-bottom: 4px;
             text-transform: uppercase;
-            text-shadow: 0 0 12px rgba(0, 240, 255, 0.9), 0 0 25px rgba(0, 180, 216, 0.7);
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.8), 0 0 20px rgba(0, 180, 216, 0.6);
         }
 
         .title-animation {
@@ -240,13 +245,13 @@
             color: white;
             font-size: 22px;
             text-decoration: none;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
         }
 
         .social-btn:hover {
-            transform: scale(1.15) translateY(-4px);
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.8);
+            transform: scale(1.1) translateY(-3px);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.8);
         }
 
         .insta-btn { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
@@ -260,21 +265,17 @@
             border-radius: 20px;
             padding: 25px;
             margin-top: 15px;
-            box-shadow: 0 0 35px rgba(0, 240, 255, 0.3);
-            backdrop-filter: blur(12px);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <!-- Canvas لشبكة الجسيمات المضيئة المتحركة -->
     <canvas id="cyberCanvas"></canvas>
-    
-    <!-- خط الليزر المتحرك من الأعلى لأسفل -->
     <div class="laser-scanline"></div>
-
-    <!-- Matrix Rain -->
     <div class="matrix-rain" id="matrixRain"></div>
 
     <div class="container">
@@ -317,19 +318,24 @@
     </div>
 
     <script>
-        // Matrix Rain Generation
+        // Matrix Rain Generation (مخفف للعمل بمرونة على الموبايل)
         const rainContainer = id => document.getElementById(id);
         let rainHtml = '';
-        for (let i = 0; i < 25; i++) {
-            let leftPos = i * 4;
-            let duration = 0.8 + (i % 4) * 0.4;
+        const rainColumns = window.innerWidth < 600 ? 15 : 25;
+        for (let i = 0; i < rainColumns; i++) {
+            let leftPos = (i / rainColumns) * 100;
+            let duration = 0.9 + (i % 4) * 0.4;
             rainHtml += `<div class="matrix-column" style="left: ${leftPos}%; animation-duration: ${duration}s;"></div>`;
         }
         rainContainer('matrixRain').innerHTML = rainHtml;
 
-        // Interactive Cyber Particles Canvas (الخلفية الرقمية المتحركة)
+        // Interactive Cyber Particles Canvas (معدل لسلاسة الموبايل)
         const canvas = document.getElementById('cyberCanvas');
         const ctx = canvas.getContext('2d');
+
+        const isMobile = window.innerWidth < 600;
+        const particleCount = isMobile ? 22 : 50;
+        const connectionDistSq = isMobile ? 90 * 90 : 120 * 120;
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -339,15 +345,14 @@
         window.addEventListener('resize', resizeCanvas);
 
         const particles = [];
-        const particleCount = 55;
 
         class Particle {
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 1.2;
-                this.vy = (Math.random() - 0.5) * 1.2;
-                this.radius = Math.random() * 2 + 1;
+                this.vx = (Math.random() - 0.5) * (isMobile ? 0.8 : 1.2);
+                this.vy = (Math.random() - 0.5) * (isMobile ? 0.8 : 1.2);
+                this.radius = Math.random() * 1.5 + 1;
             }
 
             update() {
@@ -362,8 +367,10 @@
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
                 ctx.fillStyle = '#00f0ff';
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = '#00f0ff';
+                if (!isMobile) {
+                    ctx.shadowBlur = 8;
+                    ctx.shadowColor = '#00f0ff';
+                }
                 ctx.fill();
             }
         }
@@ -382,14 +389,15 @@
                 for (let j = i + 1; j < particles.length; j++) {
                     const dx = particles[i].x - particles[j].x;
                     const dy = particles[i].y - particles[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const distSq = dx * dx + dy * dy;
 
-                    if (dist < 120) {
+                    if (distSq < connectionDistSq) {
+                        const alpha = 1 - (distSq / connectionDistSq);
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(0, 240, 255, ${1 - dist / 120})`;
-                        ctx.lineWidth = 0.6;
+                        ctx.strokeStyle = `rgba(0, 240, 255, ${alpha.toFixed(2)})`;
+                        ctx.lineWidth = 0.5;
                         ctx.stroke();
                     }
                 }
