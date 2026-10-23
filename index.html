@@ -36,7 +36,7 @@
             position: relative;
         }
 
-        /* Canvas للخلفية المتحركة مع تفعيل التسريع بواسطة GPU */
+        /* Canvas للخلفية الرقمية الشاملة (جسيمات متصلة + جسيمات متساقطة) */
         #cyberCanvas {
             position: fixed;
             top: 0;
@@ -75,36 +75,6 @@
             max-width: 500px;
             position: relative;
             z-index: 10;
-        }
-
-        /* Matrix Rain Effect */
-        .matrix-rain {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 2;
-            overflow: hidden;
-            opacity: 0.45;
-            will-change: transform;
-        }
-
-        .matrix-column {
-            position: absolute;
-            top: -50%;
-            width: 2px;
-            height: 120px;
-            background: linear-gradient(180deg, transparent, #00b4d8, #0077b6);
-            box-shadow: 0 0 6px rgba(0, 150, 255, 0.8);
-            animation: rainFall linear infinite;
-            will-change: transform;
-        }
-
-        @keyframes rainFall {
-            0% { transform: translateY(-120px); }
-            100% { transform: translateY(120vh); }
         }
 
         /* Navigation Buttons */
@@ -276,7 +246,6 @@
 
     <canvas id="cyberCanvas"></canvas>
     <div class="laser-scanline"></div>
-    <div class="matrix-rain" id="matrixRain"></div>
 
     <div class="container">
         <div class="nav-container">
@@ -318,24 +287,10 @@
     </div>
 
     <script>
-        // Matrix Rain Generation (مخفف للعمل بمرونة على الموبايل)
-        const rainContainer = id => document.getElementById(id);
-        let rainHtml = '';
-        const rainColumns = window.innerWidth < 600 ? 15 : 25;
-        for (let i = 0; i < rainColumns; i++) {
-            let leftPos = (i / rainColumns) * 100;
-            let duration = 0.9 + (i % 4) * 0.4;
-            rainHtml += `<div class="matrix-column" style="left: ${leftPos}%; animation-duration: ${duration}s;"></div>`;
-        }
-        rainContainer('matrixRain').innerHTML = rainHtml;
-
-        // Interactive Cyber Particles Canvas (معدل لسلاسة الموبايل)
         const canvas = document.getElementById('cyberCanvas');
         const ctx = canvas.getContext('2d');
 
         const isMobile = window.innerWidth < 600;
-        const particleCount = isMobile ? 22 : 50;
-        const connectionDistSq = isMobile ? 90 * 90 : 120 * 120;
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -344,14 +299,17 @@
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
-        const particles = [];
+        // 1. الجسيمات الشبكية المتحركة والتفاعلية في الخلفية
+        const netParticleCount = isMobile ? 18 : 40;
+        const connectionDistSq = isMobile ? 85 * 85 : 120 * 120;
+        const netParticles = [];
 
-        class Particle {
+        class NetParticle {
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * (isMobile ? 0.8 : 1.2);
-                this.vy = (Math.random() - 0.5) * (isMobile ? 0.8 : 1.2);
+                this.vx = (Math.random() - 0.5) * (isMobile ? 0.7 : 1.0);
+                this.vy = (Math.random() - 0.5) * (isMobile ? 0.7 : 1.0);
                 this.radius = Math.random() * 1.5 + 1;
             }
 
@@ -367,41 +325,96 @@
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
                 ctx.fillStyle = '#00f0ff';
-                if (!isMobile) {
-                    ctx.shadowBlur = 8;
-                    ctx.shadowColor = '#00f0ff';
-                }
                 ctx.fill();
             }
         }
 
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
+        for (let i = 0; i < netParticleCount; i++) {
+            netParticles.push(new NetParticle());
         }
 
+        // 2. الجسيمات المضيئة المتساقطة (بديل مطر الماتريكس)
+        const fallingParticleCount = isMobile ? 25 : 55;
+        const fallingParticles = [];
+
+        class FallingParticle {
+            constructor() {
+                this.reset(true);
+            }
+
+            reset(initial = false) {
+                this.x = Math.random() * canvas.width;
+                this.y = initial ? Math.random() * canvas.height : -10;
+                this.speed = Math.random() * 2 + 1;
+                this.radius = Math.random() * 1.8 + 0.8;
+                this.opacity = Math.random() * 0.7 + 0.3;
+                this.trailLength = Math.random() * 12 + 6;
+            }
+
+            update() {
+                this.y += this.speed;
+                if (this.y > canvas.height + 15) {
+                    this.reset(false);
+                }
+            }
+
+            draw() {
+                // رسم الجسيم المتساقط مع ذيل نيون ناعم
+                const gradient = ctx.createLinearGradient(this.x, this.y - this.trailLength, this.x, this.y);
+                gradient.addColorStop(0, 'rgba(0, 240, 255, 0)');
+                gradient.addColorStop(1, `rgba(0, 240, 255, ${this.opacity})`);
+
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y - this.trailLength);
+                ctx.lineTo(this.x, this.y);
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = this.radius;
+                ctx.stroke();
+
+                // رأس الجسيم المضيء
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < fallingParticleCount; i++) {
+            fallingParticles.push(new FallingParticle());
+        }
+
+        // الحلقة البرمجية الشاملة لرسم كل التأثيرات بسلاسة فائقة
         function animateCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
+            // رسم الجسيمات المتساقطة أولاً
+            for (let i = 0; i < fallingParticles.length; i++) {
+                fallingParticles[i].update();
+                fallingParticles[i].draw();
+            }
 
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
+            // رسم وتوصيل شبكة الجسيمات المتحركة
+            for (let i = 0; i < netParticles.length; i++) {
+                netParticles[i].update();
+                netParticles[i].draw();
+
+                for (let j = i + 1; j < netParticles.length; j++) {
+                    const dx = netParticles[i].x - netParticles[j].x;
+                    const dy = netParticles[i].y - netParticles[j].y;
                     const distSq = dx * dx + dy * dy;
 
                     if (distSq < connectionDistSq) {
                         const alpha = 1 - (distSq / connectionDistSq);
                         ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(0, 240, 255, ${alpha.toFixed(2)})`;
+                        ctx.moveTo(netParticles[i].x, netParticles[i].y);
+                        ctx.lineTo(netParticles[j].x, netParticles[j].y);
+                        ctx.strokeStyle = `rgba(0, 240, 255, ${(alpha * 0.7).toFixed(2)})`;
                         ctx.lineWidth = 0.5;
                         ctx.stroke();
                     }
                 }
             }
+
             requestAnimationFrame(animateCanvas);
         }
         animateCanvas();
