@@ -136,9 +136,9 @@
             width: 100%;
             height: 140px;
             border-radius: 20px;
-            /* بنر متدرج أنيق مع إضاءة زرقاء، ويمكنك استبداله بصورة عن طريق uncomment السطر أسفله */
-            background: linear-gradient(135deg, #001f3f, #0077b6, #00b4d8);
-            /* background-image: url('banner.jpg'); background-size: cover; background-position: center; */
+            background-image: url('banner.gif'); /* تم ضبطه خصيصاً ليعمل مع الصورة المتحركة */
+            background-size: cover;
+            background-position: center;
             border: 1px solid rgba(0, 180, 216, 0.5);
             box-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
         }
@@ -148,7 +148,7 @@
             justify-content: center;
             align-items: center;
             position: relative;
-            margin-top: -60px; /* سحب الصورة للأعلى لتبدو متداخلة مع البنر */
+            margin-top: -60px;
         }
 
         .profile-img {
@@ -156,7 +156,7 @@
             height: 120px;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid #050505; /* إطار داكن لفصل الصورة عن البنر */
+            border: 4px solid #050505;
             box-shadow: 0px 0px 25px rgba(0, 180, 216, 0.9);
             background-color: #050505;
         }
@@ -234,7 +234,7 @@
 
         <!-- Home Page -->
         <div id="homePage" class="page active">
-            <!-- غلاف البنر مع الصورة الشخصية -->
+            <!-- غلاف البنر المتحرك مع الصورة الشخصية -->
             <div class="profile-header-wrapper">
                 <div class="banner-bg"></div>
                 <div class="profile-container">
