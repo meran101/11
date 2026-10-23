@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>موقعي الشخصي</title>
-    <!-- استدعاء أيقونات FontAwesome للروابط والحسابات -->
+    <!-- أيقونات FontAwesome للروابط -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -39,17 +39,15 @@
 
         p.bio {
             color: #9aa0a6;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             font-size: 0.95rem;
         }
 
-        /* تنسيقات أزرار الروابط والحسابات الشخصية */
         .links-container {
             display: flex;
             flex-direction: column;
             gap: 15px;
             width: 100%;
-            margin-bottom: 30px;
         }
 
         .link-btn {
@@ -75,60 +73,14 @@
             color: #00ff88;
             transform: translateY(-2px);
         }
-
-        /* تنسيقات الزر ثلاثي الأبعاد (Canvas / Switch) */
-        .switch-container {
-            position: relative;
-            width: 140px;
-            height: 70px;
-            background: #e0e5ec;
-            border-radius: 35px;
-            box-shadow: inset 6px 6px 12px #bebebe, inset -6px -6px 12px #ffffff;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            padding: 5px;
-            margin: 0 auto;
-            transition: all 0.4s ease;
-        }
-
-        .switch-button {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: #e0e5ec;
-            box-shadow: 5px 5px 10px #b8b9be, -5px -5px 10px #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
-
-        .sun-icon {
-            width: 26px;
-            height: 26px;
-            background: #ffb703;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #ffb703;
-        }
-
-        .canvas-holder {
-            position: relative;
-            margin-top: 15px;
-        }
-
-        canvas#stage {
-            background: transparent;
-        }
     </style>
 </head>
 <body>
 
     <div class="profile-container">
         <h1>أهلاً بك في موقعي الشخصي</h1>
-        <p class="bio">هنا روابطي وحساباتي الشخصية الرسمية</p>
+        <p class="bio">هنا روابطي وحساباتي الشخصية</p>
 
-        <!-- أزرار الروابط والحسابات (يمكنك تغيير الروابط لروابطك الحقيقية) -->
         <div class="links-container">
             <a href="https://github.com/meran101" target="_blank" class="link-btn">
                 <i class="fab fa-github"></i> حسابي على GitHub
@@ -140,83 +92,7 @@
                 <i class="fab fa-instagram"></i> حساب الانستغرام
             </a>
         </div>
-
-        <!-- الزر التفاعلي ثلاثي الأبعاد -->
-        <div class="switch-container" id="themeSwitch">
-            <div class="switch-button" id="switchBtn">
-                <div class="sun-icon"></div>
-            </div>
-        </div>
-
-        <!-- لوحة رسم الشخصية المتحركة (Canvas) -->
-        <div class="canvas-holder">
-            <canvas id="stage" width="200" height="80"></canvas>
-        </div>
     </div>
-
-    <script>
-        // كود تحكم الزر ثلاثي الأبعاد
-        const switchBtn = document.getElementById('switchBtn');
-        const themeSwitch = document.getElementById('themeSwitch');
-        let isToggled = false;
-
-        themeSwitch.addEventListener('click', () => {
-            isToggled = !isToggled;
-            if (isToggled) {
-                switchBtn.style.transform = 'translateX(-70px)';
-                document.body.style.backgroundColor = '#151922';
-            } else {
-                switchBtn.style.transform = 'translateX(0px)';
-                document.body.style.backgroundColor = '#0b0f19';
-            }
-        });
-
-        // كود محاكاة الحركة ورسم الأنيميشن على الـ Canvas
-        const canvas = document.getElementById('stage');
-        const ctx = canvas.getContext('2d');
-
-        let x = 100;
-        let y = 40;
-        let angle = 0;
-
-        function updatePhysics() {
-            angle += 0.05;
-        }
-
-        function drawStickman() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // الرأس
-            ctx.beginPath();
-            ctx.arc(x, y - 18 + Math.sin(angle) * 3, 7, 0, Math.PI * 2);
-            ctx.fillStyle = '#00ff88';
-            ctx.fill();
-
-            // الجسد
-            ctx.beginPath();
-            ctx.moveTo(x, y - 11);
-            ctx.lineTo(x, y + 10);
-            ctx.strokeStyle = '#ffffff';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
-            // الأرجل
-            ctx.beginPath();
-            ctx.moveTo(x, y + 10);
-            ctx.lineTo(x - 7 + Math.sin(angle) * 5, y + 22);
-            ctx.moveTo(x, y + 10);
-            ctx.lineTo(x + 7 - Math.sin(angle) * 5, y + 22);
-            ctx.stroke();
-        }
-
-        function renderLoop() {
-            updatePhysics();
-            drawStickman();
-            requestAnimationFrame(renderLoop);
-        }
-
-        renderLoop();
-    </script>
 
 </body>
 </html>
