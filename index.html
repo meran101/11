@@ -24,15 +24,8 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* الخلفية المظلمة المحدثة بالكامل مع الشبكة والهالة المضيئة */
         body {
-            background-color: #030712;
-            background-image: 
-                radial-gradient(circle at 50% 30%, rgba(0, 180, 216, 0.18) 0%, transparent 65%),
-                linear-gradient(rgba(0, 180, 216, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 180, 216, 0.05) 1px, transparent 1px);
-            background-size: 100% 100%, 30px 30px, 30px 30px;
-            background-attachment: fixed;
+            background-color: #020617;
             color: #ffffff;
             min-height: 100vh;
             display: flex;
@@ -40,6 +33,38 @@
             align-items: flex-start;
             padding: 20px 15px;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Canvas للخلفية المتحركة التفاعلية بالكامل */
+        #cyberCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* تأثير خط الليزر المتحرك في الخلفية */
+        .laser-scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00f0ff, transparent);
+            box-shadow: 0 0 15px #00f0ff, 0 0 30px #00f0ff;
+            z-index: 1;
+            opacity: 0.7;
+            animation: scanlineMove 8s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes scanlineMove {
+            0% { top: -10px; }
+            100% { top: 100vh; }
         }
 
         .container {
@@ -57,9 +82,9 @@
             width: 100vw;
             height: 100vh;
             pointer-events: none;
-            z-index: 1;
+            z-index: 2;
             overflow: hidden;
-            opacity: 0.6;
+            opacity: 0.5;
         }
 
         .matrix-column {
@@ -87,9 +112,9 @@
 
         .nav-btn {
             flex: 1;
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.6));
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(30, 41, 59, 0.7));
             color: #e2e8f0;
-            border: 1px solid rgba(0, 180, 216, 0.3);
+            border: 1px solid rgba(0, 240, 255, 0.4);
             border-radius: 14px;
             padding: 10px 8px;
             font-size: 13px;
@@ -97,22 +122,22 @@
             cursor: pointer;
             transition: all 0.3s ease;
             backdrop-filter: blur(12px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
             text-align: center;
             outline: none;
         }
 
         .nav-btn:hover {
-            background: linear-gradient(135deg, rgba(0, 119, 182, 0.9), rgba(0, 180, 216, 0.7));
+            background: linear-gradient(135deg, rgba(0, 119, 182, 0.9), rgba(0, 180, 216, 0.8));
             color: #ffffff;
-            border-color: rgba(0, 212, 255, 0.9);
-            box-shadow: 0 0 25px rgba(0, 180, 216, 0.6);
+            border-color: rgba(0, 240, 255, 1);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.8);
             transform: translateY(-2px);
         }
 
         hr {
             border: none;
-            border-top: 1px solid rgba(0, 180, 216, 0.25);
+            border-top: 1px solid rgba(0, 180, 216, 0.3);
             margin: 15px 0;
         }
 
@@ -146,8 +171,8 @@
             background-image: url('download.gif');
             background-size: cover;
             background-position: center;
-            border: 1px solid rgba(0, 180, 216, 0.5);
-            box-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
+            border: 1px solid rgba(0, 240, 255, 0.6);
+            box-shadow: 0 0 25px rgba(0, 180, 216, 0.4);
         }
 
         .profile-container {
@@ -163,12 +188,12 @@
             height: 120px;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid #050505;
-            box-shadow: 0px 0px 25px rgba(0, 180, 216, 0.9);
-            background-color: #050505;
+            border: 4px solid #020617;
+            box-shadow: 0px 0px 30px rgba(0, 240, 255, 0.9);
+            background-color: #020617;
         }
 
-        /* اسم Meran تحت الصورة بخط احترافي ومضيء */
+        /* اسم Meran تحت الصورة بخط مضيء وفخم */
         .profile-name {
             text-align: center;
             font-size: 28px;
@@ -178,7 +203,7 @@
             margin-top: 12px;
             margin-bottom: 4px;
             text-transform: uppercase;
-            text-shadow: 0 0 10px rgba(0, 180, 216, 0.8), 0 0 20px rgba(0, 180, 216, 0.5);
+            text-shadow: 0 0 12px rgba(0, 240, 255, 0.9), 0 0 25px rgba(0, 180, 216, 0.7);
         }
 
         .title-animation {
@@ -191,7 +216,7 @@
 
         .subtitle-animation {
             text-align: center;
-            color: #00b4d8;
+            color: #00f0ff;
             font-size: 15px;
             margin-bottom: 20px;
         }
@@ -216,10 +241,12 @@
             font-size: 22px;
             text-decoration: none;
             transition: all 0.4s ease;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
         }
 
         .social-btn:hover {
-            transform: scale(1.1) translateY(-3px);
+            transform: scale(1.15) translateY(-4px);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.8);
         }
 
         .insta-btn { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
@@ -228,12 +255,12 @@
 
         /* About Card */
         .water-banner-card {
-            background: linear-gradient(135deg, rgba(0, 119, 182, 0.3), rgba(0, 180, 216, 0.15)), rgba(15, 15, 15, 0.85);
-            border: 1px solid rgba(0, 180, 216, 0.6);
+            background: linear-gradient(135deg, rgba(0, 119, 182, 0.35), rgba(0, 180, 216, 0.2)), rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(0, 240, 255, 0.6);
             border-radius: 20px;
             padding: 25px;
             margin-top: 15px;
-            box-shadow: 0 0 35px rgba(0, 150, 255, 0.3);
+            box-shadow: 0 0 35px rgba(0, 240, 255, 0.3);
             backdrop-filter: blur(12px);
             text-align: center;
         }
@@ -241,6 +268,13 @@
 </head>
 <body>
 
+    <!-- Canvas لشبكة الجسيمات المضيئة المتحركة -->
+    <canvas id="cyberCanvas"></canvas>
+    
+    <!-- خط الليزر المتحرك من الأعلى لأسفل -->
+    <div class="laser-scanline"></div>
+
+    <!-- Matrix Rain -->
     <div class="matrix-rain" id="matrixRain"></div>
 
     <div class="container">
@@ -254,7 +288,6 @@
 
         <!-- Home Page -->
         <div id="homePage" class="page active">
-            <!-- غلاف البنر المتحرك مع الصورة الشخصية -->
             <div class="profile-header-wrapper">
                 <div class="banner-bg"></div>
                 <div class="profile-container">
@@ -262,7 +295,6 @@
                 </div>
             </div>
 
-            <!-- اسم Meran يظهر هنا تحت صورة البروفايل مباشرة -->
             <div class="profile-name">MERAN</div>
 
             <h1 class="title-animation" id="mainTitle">Welcome To My Account 👋</h1>
@@ -277,9 +309,9 @@
 
         <!-- About Page -->
         <div id="aboutPage" class="page">
-            <h2 style="text-align: center; color: #00b4d8; margin-bottom: 15px;" id="aboutTitle">About Me 👤</h2>
+            <h2 style="text-align: center; color: #00f0ff; margin-bottom: 15px;" id="aboutTitle">About Me 👤</h2>
             <div class="water-banner-card">
-                <p style="font-size: 20px; font-weight: 700; color: #00b4d8; margin: 0;">🤖 Owner of TIGER Bot 🐅</p>
+                <p style="font-size: 20px; font-weight: 700; color: #00f0ff; margin: 0;">🤖 Owner of TIGER Bot 🐅</p>
             </div>
         </div>
     </div>
@@ -294,6 +326,77 @@
             rainHtml += `<div class="matrix-column" style="left: ${leftPos}%; animation-duration: ${duration}s;"></div>`;
         }
         rainContainer('matrixRain').innerHTML = rainHtml;
+
+        // Interactive Cyber Particles Canvas (الخلفية الرقمية المتحركة)
+        const canvas = document.getElementById('cyberCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const particles = [];
+        const particleCount = 55;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 1.2;
+                this.vy = (Math.random() - 0.5) * 1.2;
+                this.radius = Math.random() * 2 + 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#00f0ff';
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#00f0ff';
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(0, 240, 255, ${1 - dist / 120})`;
+                        ctx.lineWidth = 0.6;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
 
         // Language & Navigation
         let currentLang = 'en';
