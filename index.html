@@ -36,7 +36,7 @@
             position: relative;
         }
 
-        /* Canvas للخلفية الرقمية الشاملة (جسيمات متصلة + جسيمات متساقطة) */
+        /* Canvas للخلفية الرقمية الشاملة */
         #cyberCanvas {
             position: fixed;
             top: 0;
@@ -49,7 +49,7 @@
             transform: translateZ(0);
         }
 
-        /* تأثير خط الليزر المتحرك خفيف الأداء */
+        /* تأثير خط الليزر المتحرك */
         .laser-scanline {
             position: fixed;
             top: 0;
@@ -80,7 +80,7 @@
         /* Navigation Buttons */
         .nav-container {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             width: 100%;
             margin-bottom: 15px;
         }
@@ -91,8 +91,8 @@
             color: #e2e8f0;
             border: 1px solid rgba(0, 240, 255, 0.4);
             border-radius: 14px;
-            padding: 10px 8px;
-            font-size: 13px;
+            padding: 10px 6px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -101,6 +101,10 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
             text-align: center;
             outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
         }
 
         .nav-btn:hover {
@@ -228,7 +232,7 @@
         .snap-btn { background: #FFFC00; color: #000000; }
         .threads-btn { background: #101010; color: #ffffff; border: 1px solid #333333; }
 
-        /* About Card */
+        /* About & Contact Card */
         .water-banner-card {
             background: linear-gradient(135deg, rgba(0, 119, 182, 0.35), rgba(0, 180, 216, 0.2)), rgba(15, 23, 42, 0.85);
             border: 1px solid rgba(0, 240, 255, 0.6);
@@ -240,6 +244,30 @@
             -webkit-backdrop-filter: blur(10px);
             text-align: center;
         }
+
+        /* Discord Button Styling */
+        .discord-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+            padding: 14px 28px;
+            background: #5865F2;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 14px;
+            text-decoration: none;
+            box-shadow: 0 0 20px rgba(88, 101, 242, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .discord-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 0 30px rgba(88, 101, 242, 0.9);
+            background: #4752C4;
+        }
     </style>
 </head>
 <body>
@@ -248,10 +276,12 @@
     <div class="laser-scanline"></div>
 
     <div class="container">
+        <!-- شريط التنقل مع الأزرار الأربعة -->
         <div class="nav-container">
-            <button class="nav-btn" id="homeBtn" onclick="showPage('home')">🏠 Home</button>
-            <button class="nav-btn" id="aboutBtn" onclick="showPage('about')">👤 About</button>
-            <button class="nav-btn" id="langBtn" onclick="toggleLang()">العربية 🌐</button>
+            <button class="nav-btn" id="homeBtn" onclick="showPage('home')"><i class="fa-solid fa-house"></i> Home</button>
+            <button class="nav-btn" id="aboutBtn" onclick="showPage('about')"><i class="fa-solid fa-user"></i> About</button>
+            <button class="nav-btn" id="contactBtn" onclick="showPage('contact')"><i class="fa-solid fa-paper-plane"></i> Contact</button>
+            <button class="nav-btn" id="langBtn" onclick="toggleLang()"><i class="fa-solid fa-globe"></i> العربية</button>
         </div>
 
         <hr>
@@ -282,6 +312,17 @@
             <h2 style="text-align: center; color: #00f0ff; margin-bottom: 15px;" id="aboutTitle">About Me 👤</h2>
             <div class="water-banner-card">
                 <p style="font-size: 20px; font-weight: 700; color: #00f0ff; margin: 0;">🤖 Owner of TIGER Bot 🐅</p>
+            </div>
+        </div>
+
+        <!-- Contact Page -->
+        <div id="contactPage" class="page">
+            <h2 style="text-align: center; color: #00f0ff; margin-bottom: 15px;" id="contactTitle">Contact Me ✈️</h2>
+            <div class="water-banner-card">
+                <p style="font-size: 22px; font-weight: 800; color: #ffffff; margin-bottom: 15px;" id="contactText">To contact me</p>
+                <a href="https://discord.com/users/761216554402185246" target="_blank" class="discord-btn">
+                    <i class="fa-brands fa-discord"></i> Discord
+                </a>
             </div>
         </div>
     </div>
@@ -333,7 +374,7 @@
             netParticles.push(new NetParticle());
         }
 
-        // 2. الجسيمات المضيئة المتساقطة (بديل مطر الماتريكس)
+        // 2. الجسيمات المضيئة المتساقطة
         const fallingParticleCount = isMobile ? 25 : 55;
         const fallingParticles = [];
 
@@ -359,7 +400,6 @@
             }
 
             draw() {
-                // رسم الجسيم المتساقط مع ذيل نيون ناعم
                 const gradient = ctx.createLinearGradient(this.x, this.y - this.trailLength, this.x, this.y);
                 gradient.addColorStop(0, 'rgba(0, 240, 255, 0)');
                 gradient.addColorStop(1, `rgba(0, 240, 255, ${this.opacity})`);
@@ -371,7 +411,6 @@
                 ctx.lineWidth = this.radius;
                 ctx.stroke();
 
-                // رأس الجسيم المضيء
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
@@ -383,17 +422,14 @@
             fallingParticles.push(new FallingParticle());
         }
 
-        // الحلقة البرمجية الشاملة لرسم كل التأثيرات بسلاسة فائقة
         function animateCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // رسم الجسيمات المتساقطة أولاً
             for (let i = 0; i < fallingParticles.length; i++) {
                 fallingParticles[i].update();
                 fallingParticles[i].draw();
             }
 
-            // رسم وتوصيل شبكة الجسيمات المتحركة
             for (let i = 0; i < netParticles.length; i++) {
                 netParticles[i].update();
                 netParticles[i].draw();
@@ -428,6 +464,8 @@
                 document.getElementById('homePage').classList.add('active');
             } else if (pageId === 'about') {
                 document.getElementById('aboutPage').classList.add('active');
+            } else if (pageId === 'contact') {
+                document.getElementById('contactPage').classList.add('active');
             }
         }
 
@@ -435,23 +473,29 @@
             if (currentLang === 'en') {
                 currentLang = 'ar';
                 document.documentElement.dir = 'rtl';
-                document.getElementById('homeBtn').innerText = '🏠 الرئيسية';
-                document.getElementById('aboutBtn').innerText = '👤 عني';
-                document.getElementById('langBtn').innerText = 'English 🌐';
+                document.getElementById('homeBtn').innerHTML = '<i class="fa-solid fa-house"></i> الرئيسية';
+                document.getElementById('aboutBtn').innerHTML = '<i class="fa-solid fa-user"></i> عني';
+                document.getElementById('contactBtn').innerHTML = '<i class="fa-solid fa-paper-plane"></i> تواصل معي';
+                document.getElementById('langBtn').innerHTML = '<i class="fa-solid fa-globe"></i> English';
                 
                 document.getElementById('mainTitle').innerText = 'أهلاً بك في حسابي 👋';
                 document.getElementById('subTitle').innerText = 'حساباتي على وسائل التواصل الاجتماعي';
                 document.getElementById('aboutTitle').innerText = 'نبذة عني 👤';
+                document.getElementById('contactTitle').innerText = 'تواصل معي ✈️';
+                document.getElementById('contactText').innerText = 'للتواصل معي';
             } else {
                 currentLang = 'en';
                 document.documentElement.dir = 'ltr';
-                document.getElementById('homeBtn').innerText = '🏠 Home';
-                document.getElementById('aboutBtn').innerText = '👤 About';
-                document.getElementById('langBtn').innerText = 'العربية 🌐';
+                document.getElementById('homeBtn').innerHTML = '<i class="fa-solid fa-house"></i> Home';
+                document.getElementById('aboutBtn').innerHTML = '<i class="fa-solid fa-user"></i> About';
+                document.getElementById('contactBtn').innerHTML = '<i class="fa-solid fa-paper-plane"></i> Contact';
+                document.getElementById('langBtn').innerHTML = '<i class="fa-solid fa-globe"></i> العربية';
                 
                 document.getElementById('mainTitle').innerText = 'Welcome To My Account 👋';
                 document.getElementById('subTitle').innerText = 'My social media accounts';
                 document.getElementById('aboutTitle').innerText = 'About Me 👤';
+                document.getElementById('contactTitle').innerText = 'Contact Me ✈️';
+                document.getElementById('contactText').innerText = 'To contact me';
             }
         }
     </script>
