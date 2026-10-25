@@ -245,6 +245,31 @@
             text-align: center;
         }
 
+        /* Bot Link Button Styling */
+        .bot-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #00b4d8, #0077b6);
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 14px;
+            text-decoration: none;
+            border: 1px solid rgba(0, 240, 255, 0.8);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .bot-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.9);
+            background: linear-gradient(135deg, #00d4ff, #0096c7);
+        }
+
         /* Discord Button Styling */
         .discord-btn {
             display: inline-flex;
@@ -276,7 +301,7 @@
     <div class="laser-scanline"></div>
 
     <div class="container">
-        <!-- شريط التنقل مع الأزرار الأربعة -->
+        <!-- شريط التنقل -->
         <div class="nav-container">
             <button class="nav-btn" id="homeBtn" onclick="showPage('home')"><i class="fa-solid fa-house"></i> Home</button>
             <button class="nav-btn" id="aboutBtn" onclick="showPage('about')"><i class="fa-solid fa-user"></i> About</button>
@@ -311,7 +336,12 @@
         <div id="aboutPage" class="page">
             <h2 style="text-align: center; color: #00f0ff; margin-bottom: 15px;" id="aboutTitle">About Me 👤</h2>
             <div class="water-banner-card">
-                <p style="font-size: 20px; font-weight: 700; color: #00f0ff; margin: 0;">🤖 Owner of TIGER Bot 🐅</p>
+                <p style="font-size: 20px; font-weight: 700; color: #00f0ff; margin-bottom: 10px;" id="aboutBotOwner">🤖 Owner of TIGER Bot 🐅</p>
+                
+                <!-- رابط البوت المضاف حديثاً مع أيقونة الروبوت -->
+                <a href="https://TIGER.bot" target="_blank" class="bot-btn">
+                    <i class="fa-solid fa-robot"></i> TIGER.bot
+                </a>
             </div>
         </div>
 
@@ -481,6 +511,7 @@
                 document.getElementById('mainTitle').innerText = 'أهلاً بك في حسابي 👋';
                 document.getElementById('subTitle').innerText = 'حساباتي على وسائل التواصل الاجتماعي';
                 document.getElementById('aboutTitle').innerText = 'نبذة عني 👤';
+                document.getElementById('aboutBotOwner').innerText = '🤖 مالك بوت تايكر 🐅';
                 document.getElementById('contactTitle').innerText = 'تواصل معي ✈️';
                 document.getElementById('contactText').innerText = 'للتواصل معي';
             } else {
@@ -494,6 +525,7 @@
                 document.getElementById('mainTitle').innerText = 'Welcome To My Account 👋';
                 document.getElementById('subTitle').innerText = 'My social media accounts';
                 document.getElementById('aboutTitle').innerText = 'About Me 👤';
+                document.getElementById('aboutBotOwner').innerText = '🤖 Owner of TIGER Bot 🐅';
                 document.getElementById('contactTitle').innerText = 'Contact Me ✈️';
                 document.getElementById('contactText').innerText = 'To contact me';
             }
